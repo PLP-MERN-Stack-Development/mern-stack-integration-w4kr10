@@ -1,15 +1,15 @@
-# MERN Stack Integration Assignment
+# MERN Blog
 
-This assignment focuses on building a full-stack MERN (MongoDB, Express.js, React.js, Node.js) application that demonstrates seamless integration between front-end and back-end components.
+Full‑stack MERN (MongoDB, Express.js, React, Node.js) blog demonstrating clean integration between a REST API and a Vite React client with routing, authentication, validation, and stateful UI.
 
-## Assignment Overview
+## Project Overview
 
-You will build a blog application with the following features:
-1. RESTful API with Express.js and MongoDB
-2. React front-end with component architecture
-3. Full CRUD functionality for blog posts
-4. User authentication and authorization
-5. Advanced features like image uploads and comments
+The application provides:
+1. RESTful API for posts, categories, and authentication
+2. React front‑end (Vite) with routing, guarded routes, and forms
+3. CRUD for blog posts with category filtering, search, and pagination
+4. JWT‑based authentication (register, login) with protected create/edit
+5. Server‑side validation and structured error handling
 
 ## Project Structure
 
@@ -37,37 +37,69 @@ mern-blog/
 └── README.md               # Project documentation
 ```
 
-## Getting Started
+## Setup Instructions
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week4-Assignment.md` file
-4. Complete the tasks outlined in the assignment
+1. Prerequisites
+   - Node.js v18+
+   - MongoDB (local or Atlas)
 
-## Files Included
+2. Environment variables
+   - Create `server/.env` with:
+     - `PORT=5000`
+     - `MONGODB_URI=mongodb://27017/
+     - `NODE_ENV=development`
+     - `JWT_SECRET=dev_secret_change_me`
+   - Optionally create `client/.env` with:
+     - `VITE_API_URL=http://localhost:5000/api`
 
-- `Week4-Assignment.md`: Detailed assignment instructions
-- Starter code for both client and server:
-  - Basic project structure
-  - Configuration files
-  - Sample models and components
+3. Install and run
+   - Server
+     - `cd server`
+     - `npm install`
+     - `npm run dev`
+   - Client
+     - Open a new terminal
+     - `cd client`
+     - `npm install`
+     - `npm run dev`
 
-## Requirements
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- npm or yarn
-- Git
+## API Documentation
 
-## Submission
+Base URL: `/api`
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+Auth
+- `POST /api/auth/register` — body: `{ name, email, password }`
+- `POST /api/auth/login` — body: `{ email, password }` — returns `{ token, user }`
 
-1. Complete both the client and server portions of the application
-2. Implement all required API endpoints
-3. Create the necessary React components and hooks
-4. Document your API and setup process in the README.md
-5. Include screenshots of your working application
+Posts
+- `GET /api/posts?page=1&limit=10&category=:categoryId` — list with pagination
+- `GET /api/posts/:idOrSlug` — single post by id or slug
+- `POST /api/posts` — protected — body: `{ title, content, category, tags?, featuredImage?, excerpt?, isPublished? }`
+- `PUT /api/posts/:id` — protected — update fields above
+- `DELETE /api/posts/:id` — protected
+- `POST /api/posts/:id/comments` — protected — body: `{ content }`
+- `GET /api/posts/search?q=term` — search by title/content/excerpt
+
+Categories
+- `GET /api/categories` — list
+- `POST /api/categories` — protected(admin)
+- `GET /api/categories/:id`
+- `PUT /api/categories/:id` — protected(admin)
+- `DELETE /api/categories/:id` — protected(admin)
+
+## Features Implemented
+
+- JWT authentication (register/login)
+- Protected routes on client and server (create/edit/delete posts)
+- Posts CRUD with validation
+- Category filtering, search (debounced), and pagination on list view
+- Request/response interceptors on client for auth handling
+- Error handling middleware on server
+
+## Screenshot
+
+![screenshot](image.png)
 
 ## Resources
 

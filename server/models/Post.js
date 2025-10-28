@@ -66,17 +66,14 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Create slug from title before saving
-PostSchema.pre('save', function (next) {
-  if (!this.isModified('title')) {
-    return next();
+// Create slug from title before validation so required checks pass
+PostSchema.pre('validate', function (next) {
+  if (this.title && !this.slug) {
+    this.slug = this.title
+      .toLowerCase()
+      .replace(/[^\w ]+/g, '')
+      .replace(/ +/g, '-');
   }
-  
-  this.slug = this.title
-    .toLowerCase()
-    .replace(/[^\w ]+/g, '')
-    .replace(/ +/g, '-');
-    
   next();
 });
 
